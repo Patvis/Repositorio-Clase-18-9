@@ -25,7 +25,7 @@ public class Ejercicio15CajeroAutomaticoBancoCFP36 {
                         saldo = transDinero(saldo);
                         break;
                     case 3:
-                        extDinero(saldo);
+                        saldo = extDinero(saldo);
                         break;
                     case 4:
                         cambClave(pw);
@@ -36,7 +36,7 @@ public class Ejercicio15CajeroAutomaticoBancoCFP36 {
     
     //Funciones del menú principal
     public static void verSaldo(int saldo) {
-        System.out.println("==============================");
+        System.out.println("\n\n==============================");
         System.out.println("========BANCO CFP N°36========");
         System.out.println("==============================");
         System.out.println("==Consulta de Saldo:==========");
@@ -56,7 +56,7 @@ public class Ejercicio15CajeroAutomaticoBancoCFP36 {
         do {
             CBU = JOptionPane.showInputDialog(null, "Ingrese el CBU de la cuenta a transferir:","Ingrese el CBU aquí.");
             //Verificar que el largo del CBU es de 16 caracteres para salir del bucle
-            if (CBU.length()==1) {
+            if (CBU.length()==16) {
                 CBUvalido = true;
             }
         }  while (CBUvalido==false);
@@ -69,10 +69,9 @@ public class Ejercicio15CajeroAutomaticoBancoCFP36 {
         ticketTransf(saldo,montoTransf,CBU);
         return saldo;
     }
-    
         //Funcion Ticket de Transferencia
         private static void ticketTransf(int saldo, int montoTransf, String CBU) {
-            System.out.println("==============================");
+            System.out.println("\n\n==============================");
             System.out.println("========BANCO CFP N°36========");
             System.out.println("==============================");
             System.out.println("==Transferencia a CBU:========");
@@ -85,12 +84,69 @@ public class Ejercicio15CajeroAutomaticoBancoCFP36 {
             System.out.println("==============================");
         }
     
-    public static void extDinero(int saldo) {
-        
+    public static int extDinero(int saldo) {
+        int montoExt=0;
+        String[] opciones = {"200","500","1000","2000","Otro Importe"};
+        do {
+            Object opcionElegida = JOptionPane.showInputDialog(null,"Seleccione el importe a Retirar:","Retirar Dinero",JOptionPane.QUESTION_MESSAGE,null, opciones,opciones[0]);
+            switch ((String)opcionElegida) {
+                case "200":
+                    montoExt=200;
+                    break;
+                case "500":
+                    montoExt=500;
+                    break;
+                case "1000":
+                    montoExt=1000;
+                    break;
+                case "2000":
+                    montoExt=2000;
+                    break;
+                case "Otro Importe":
+                    montoExt=Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el monto a Retirar:","Ingrese el monto aquí."));
+                    break;
+            }
+            if (montoExt>saldo) {
+                JOptionPane.showMessageDialog(null,"Por favor, ingrese un monto valido menor a su saldo.\nSu saldo actual es de: $"+saldo,"Retirar Dinero",JOptionPane.WARNING_MESSAGE);
+            }
+        } while ((montoExt>=saldo)||(montoExt<0));
+        saldo = saldo - montoExt;
+        ticketExt(saldo,montoExt);
+        return saldo;
     }
-    
-    public static void cambClave(String pw) {
-        
+        //Funcion Ticket de Extraccion
+        private static void ticketExt(int saldo, int montoExt) {
+            System.out.println("\n\n==============================");
+            System.out.println("========BANCO CFP N°36========");
+            System.out.println("==============================");
+            System.out.println("==Extracción realizada por:===");
+            System.out.println("==$"+montoExt+"=====================");
+            System.out.println("==Saldo Restante:=============");
+            System.out.println("==$"+saldo+"======================");
+            System.out.println("==============================");
+        }
+ 
+    public static String cambClave(String pw) {
+        /*Punto de Manu 4_Cambio de Clave
+  A)Seleccionar canal para el cambio de clave (HOME BANKING, Clave telefonica y Cajero)
+  B)La clave no puede ser la misma que tiene hoy
+  C)Imprimir comprobante de cambio de clave indicar en que canal se realizo el cmabio. No mostrar la clave solo ticket informativo.*/   
+        String nuevaPw="clave inicializada C:";
+        String[] opciones = {"Clave Homebanking","Clave Telefónica","Clave de Cajero"};
+        Object opcionElegida = JOptionPane.showInputDialog(null,"Seleccione la clave que desea cambiar:","Cambio de Clave",JOptionPane.QUESTION_MESSAGE,null, opciones,opciones[0]);
+        System.out.println(opcionElegida);
+        switch ((String)opcionElegida) {
+            case "Clave Homebanking":
+                nuevaPw=JOptionPane.showInputDialog(null,"Por favor, ingrese su nueva Clave Homebanking:","Cambio de Clave");
+                break;
+            case "Clave Telefónica":
+                nuevaPw=JOptionPane.showInputDialog(null,"Por favor, ingrese su nueva Clave Telefonica:","Cambio de Clave");
+                break;
+            case "Clave de Cajero":
+                nuevaPw=JOptionPane.showInputDialog(null,"Por favor, ingrese su nueva Clave de Cajero:","Cambio de Clave");
+                break;
+        }
+        return nuevaPw;
     }
     
 }
