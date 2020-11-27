@@ -8,13 +8,14 @@ public class Ejercicio15CajeroAutomaticoBancoCFP36 {
     public static void main(String[] args) {
         int saldo=50000;
         int operacion=0;
-        String pw="1234", pwIngresada = "12345678";
+        String[] pw = new String[]{"1234","ClaveHb","ClaveTel"};
+        String pwIngresada = "1";
         ImageIcon icon = new  ImageIcon("src/Images/RsBankLogo.png");
   
         JOptionPane.showMessageDialog(null, "Banco CFP N°36","Bienvenido",JOptionPane.INFORMATION_MESSAGE,icon);
         pwIngresada = JOptionPane.showInputDialog(null, "Bienvenido Patricio.\nPor favor, Ingrese su contraseña:",null);
-        System.out.println(pw+" | "+ pwIngresada);
-        if (pwIngresada.equals(pw)){
+        System.out.println(pw[0]+" | "+ pwIngresada);
+        if (pwIngresada.equals(pw[0])){
             do {
                 operacion = Integer.parseInt(JOptionPane.showInputDialog(null, "1. Saldo\n2. Transferir\n3. Extracción\n4. Cambio de Clave\n5. Salir","Ingrese la opcion deseada aquí."));
                 switch(operacion) {
@@ -28,7 +29,7 @@ public class Ejercicio15CajeroAutomaticoBancoCFP36 {
                         saldo = extDinero(saldo);
                         break;
                     case 4:
-                        cambClave(pw);
+                        pw = cambClave(pw);
                 }
             } while(operacion!=5);
         }
@@ -126,27 +127,49 @@ public class Ejercicio15CajeroAutomaticoBancoCFP36 {
             System.out.println("==============================");
         }
  
-    public static String cambClave(String pw) {
-        /*Punto de Manu 4_Cambio de Clave
-  A)Seleccionar canal para el cambio de clave (HOME BANKING, Clave telefonica y Cajero)
-  B)La clave no puede ser la misma que tiene hoy
-  C)Imprimir comprobante de cambio de clave indicar en que canal se realizo el cmabio. No mostrar la clave solo ticket informativo.*/   
+    public static String[] cambClave(String[]pw) { 
         String nuevaPw="clave inicializada C:";
         String[] opciones = {"Clave Homebanking","Clave Telefónica","Clave de Cajero"};
         Object opcionElegida = JOptionPane.showInputDialog(null,"Seleccione la clave que desea cambiar:","Cambio de Clave",JOptionPane.QUESTION_MESSAGE,null, opciones,opciones[0]);
         System.out.println(opcionElegida);
         switch ((String)opcionElegida) {
             case "Clave Homebanking":
-                nuevaPw=JOptionPane.showInputDialog(null,"Por favor, ingrese su nueva Clave Homebanking:","Cambio de Clave");
+                nuevaPw=JOptionPane.showInputDialog(null,"Por favor, ingrese su nueva Clave Homebanking:","Nueva Clave");
+                if (!nuevaPw.equals(pw[1])) {
+                    pw[1]=nuevaPw;
+                } else {
+                    JOptionPane.showMessageDialog(null, "La nueva Clave Homebanking no puede ser igual a la actual!","Cambio de Clave: Homebanking",JOptionPane.ERROR_MESSAGE);
+                }
                 break;
             case "Clave Telefónica":
-                nuevaPw=JOptionPane.showInputDialog(null,"Por favor, ingrese su nueva Clave Telefonica:","Cambio de Clave");
+                if (!nuevaPw.equals(pw[2]))  {
+                nuevaPw=JOptionPane.showInputDialog(null,"Por favor, ingrese su nueva Clave Telefonica:","Nueva Clave");
+                pw[2]=nuevaPw;
+                } else {
+                    JOptionPane.showMessageDialog(null, "La nueva Clave Telefonica no puede ser igual a la actual!","Cambio de Clave: Telefonica",JOptionPane.ERROR_MESSAGE);
+                }
                 break;
             case "Clave de Cajero":
-                nuevaPw=JOptionPane.showInputDialog(null,"Por favor, ingrese su nueva Clave de Cajero:","Cambio de Clave");
+                if (!nuevaPw.equals(pw[0])) {
+                nuevaPw=JOptionPane.showInputDialog(null,"Por favor, ingrese su nueva Clave de Cajero:","Nueva Clave");
+                pw[0]=nuevaPw;
+                } else {
+                    JOptionPane.showMessageDialog(null, "La nueva Clave de Cajero no puede ser igual a la actual!","Cambio de Clave: Cajero",JOptionPane.ERROR_MESSAGE);
+                }
                 break;
         }
-        return nuevaPw;
+        System.out.println(pw[0]+" | "+pw[1]+" | "+pw[2]);
+        ticketClave((String)opcionElegida);
+        return pw;
     }
+        private static void ticketClave(String opcionElegida) {
+            System.out.println("\n\n==============================");
+            System.out.println("========BANCO CFP N°36========");
+            System.out.println("==============================");
+            System.out.println("==Usted ha cambiado su========");
+            System.out.println("=="+opcionElegida+"=========");
+            System.out.println("==correctamente!==============");
+            System.out.println("==============================");
+        }
     
 }
