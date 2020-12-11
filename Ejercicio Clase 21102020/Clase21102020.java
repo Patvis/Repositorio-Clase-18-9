@@ -1,3 +1,7 @@
+/*
+Crear una matriz solicitando al usuario inngresar el numero de filas y columnass, y asignar un valor aleatorio a cada segmento
+*/
+
 import java.util.Scanner;
 import java.util.Random;
 
